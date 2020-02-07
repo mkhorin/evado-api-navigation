@@ -1,7 +1,5 @@
-# Evado navigation API
+# Evado Navigation API
 
-## Application programming interface module for navigation data access
+### Application programming interface module for navigation data access
 
-### Evado Kit
-
-https://github.com/mkhorin/evado
+[Evado Kit](https://github.com/mkhorin/evado)
