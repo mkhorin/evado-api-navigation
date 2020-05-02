@@ -5,7 +5,12 @@
 
 const Base = require('evado/component/base/BaseModule');
 
-module.exports = class NavigationModule extends Base {
+module.exports = class NavigationApiModule extends Base {
 
+    static getConstants () {
+        return {
+            NAME: 'navigation'
+        };
+    }
 };
 module.exports.init(module);
