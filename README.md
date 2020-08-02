@@ -1,5 +1,5 @@
-# Evado Navigation API
+# Evado Framework Navigation API
 
 ### Navigation data access app programming interface module 
 
-[Evado Platform](https://github.com/mkhorin/evado)
+[Evado Framework](https://github.com/mkhorin/evado)

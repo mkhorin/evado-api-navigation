@@ -1,7 +1,7 @@
 {
   "name": "evado-api-navigation",
-  "version": "1.5.0",
-  "description": "Evado Platform navigation data access API module",
+  "version": "1.6.0",
+  "description": "Evado Framework navigation data access API module",
   "author": {
     "name": "Maxim Khorin",
     "email": "maksimovichu@gmail.com"
