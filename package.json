@@ -1,15 +1,12 @@
 {
   "name": "evado-api-navigation",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Evado Framework navigation data access API module",
   "author": {
     "name": "Maxim Khorin",
     "email": "maksimovichu@gmail.com"
   },
   "license": "Apache-2.0",
-  "engines": {
-    "node": ">=12.16.2"
-  },
   "homepage": "https://github.com/mkhorin/evado-api-navigation",
   "repository": {
     "type": "git",
