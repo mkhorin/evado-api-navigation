@@ -50,6 +50,22 @@ module.exports = class MetaController extends Base {
         this.sendJson(MetaSelectHelper.getLabelItems(items));
     }
 
+    async actionSearch () {
+        const params = this.getPostParams();
+        const section = this.navMeta.getSection(params.section);
+        if (!section) {
+            throw new NotFound('Navigation section not found');
+        }
+        const value = params.search;
+        if (typeof value !== 'string' || value.length < 2 || value.length > 32) {
+            throw new BadRequest('Invalid search value');
+        }
+        const nodes = section.search(value);
+        nodes.length
+            ? this.sendJson(await this.resolveNodes(nodes, section))
+            : this.send();
+    }
+
     async resolveNodes (items, section) {
         const rbac = this.module.getRbac();
         const forbidden = await rbac.resolveNavAccess(this.user.assignments, {items, section});
@@ -81,5 +97,6 @@ module.exports = class MetaController extends Base {
 };
 module.exports.init(module);
 
+const BadRequest = require('areto/error/http/BadRequest');
 const NotFound = require('areto/error/http/NotFound');
 const MetaSelectHelper = require('../component/MetaSelectHelper');
