@@ -68,7 +68,10 @@ module.exports = class MetaController extends Base {
 
     async resolveNodes (items, section) {
         const rbac = this.module.getRbac();
-        const forbidden = await rbac.resolveNavAccess(this.user.assignments, {items, section});
+        const forbidden = await rbac.resolveNavAccess(this.user.assignments, {items, section}, {
+            controller: this,
+            withParents: true
+        });
         if (forbidden[section.id] === true) {
             return [];
         }
