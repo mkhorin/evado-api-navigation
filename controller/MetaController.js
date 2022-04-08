@@ -11,7 +11,9 @@ module.exports = class MetaController extends Base {
         return {
             METHODS: {
                 '*': 'post'
-            }
+            },
+            NAV_SEARCH_MIN: 2,
+            NAV_SEARCH_MAX: 32
         };
     }
 
@@ -57,7 +59,7 @@ module.exports = class MetaController extends Base {
             throw new NotFound('Navigation section not found');
         }
         const value = params.search;
-        if (typeof value !== 'string' || value.length < 2 || value.length > 32) {
+        if (!this.validateNavSearch(value)) {
             throw new BadRequest('Invalid search value');
         }
         const nodes = section.search(value);
@@ -75,19 +77,33 @@ module.exports = class MetaController extends Base {
         if (forbidden[section.id] === true) {
             return [];
         }
+        const dynamic = await section.getDynamicNodes(items, {controller: this});
         const nodes = [];
-        for (const node of items) {
-            if (forbidden[node.id] !== true) {
-                nodes.push(this.getNodeData(node));
+        for (const item of items) {
+            if (forbidden[item.id] === true) {
+                // skip forbidden item
+            } else if (Array.isArray(dynamic[item.id])) {
+                this.setDynamicNodes(dynamic[item.id], nodes);
+            } else {
+                nodes.push(this.getNodeData(item));
             }
         }
         return nodes;
     }
 
+    setDynamicNodes (items, result) {
+        for (const item of items) {
+            result.push(Object.assign(this.getNodeData(item), {
+               objectId: item.objectId,
+               urlParams: item.serializeUrlParams()
+            }));
+        }
+    }
+
     getNodeData (node) {
         return {
             name: node.name,
-            label: node.data.label,
+            label: node.label,
             children: !!node.children,
             options: node.options,
             class: node.data.class,
@@ -96,6 +112,12 @@ module.exports = class MetaController extends Base {
             url: node.data.url,
             system: node.system
         };
+    }
+
+    validateNavSearch (value) {
+        return typeof value === 'string'
+            && value.length >= this.NAV_SEARCH_MIN
+            && value.length <= this.NAV_SEARCH_MAX;
     }
 };
 module.exports.init(module);
