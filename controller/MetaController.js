@@ -18,7 +18,8 @@ module.exports = class MetaController extends Base {
     }
 
     async actionSection () {
-        const section = this.navMeta.getSection(this.getPostParam('id'));
+        const {id} = this.getPostParams();
+        const section = this.navMeta.getSection(id);
         if (!section) {
             throw new NotFound('Navigation section not found');
         }
@@ -31,7 +32,8 @@ module.exports = class MetaController extends Base {
     }
 
     async actionNode () {
-        const node = this.navMeta.getNode(this.getPostParam('id'));
+        const {id} = this.getPostParams();
+        const node = this.navMeta.getNode(id);
         if (!node) {
             throw new NotFound('Navigation node not found');
         }
@@ -40,11 +42,13 @@ module.exports = class MetaController extends Base {
     }
 
     actionListSectionSelect () {
-        this.sendJson(MetaSelectHelper.getLabelItems(this.navMeta.sections.values()));
+        const items = this.navMeta.sections.values();
+        this.sendJson(MetaSelectHelper.getLabelItems(items));
     }
 
     actionListNodeSelect () {
-        const section = this.navMeta.getSection(this.getPostParam('section'));
+        const {id} = this.getPostParams();
+        const section = this.navMeta.getSection(id);
         if (!section) {
             throw new NotFound('Navigation section not found');
         }

@@ -13,6 +13,9 @@ module.exports = class BaseController extends Base {
     }
 
     createMetaSecurity (config) {
-        return this.spawn('meta/MetaSecurity', {controller: this, ...config});
+        return this.spawn('meta/MetaSecurity', {
+            controller: this,
+            ...config
+        });
     }
 };
