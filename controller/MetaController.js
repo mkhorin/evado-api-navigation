@@ -43,7 +43,8 @@ module.exports = class MetaController extends Base {
 
     actionListSectionSelect () {
         const items = this.navMeta.sections.values();
-        this.sendJson(MetaSelectHelper.getLabelItems(items));
+        const data = MetaSelectHelper.getLabelItems(items);
+        this.sendJson(data);
     }
 
     actionListNodeSelect () {
@@ -53,7 +54,8 @@ module.exports = class MetaController extends Base {
             throw new NotFound('Navigation section not found');
         }
         const items = section.nodes.filter(item => !item.system);
-        this.sendJson(MetaSelectHelper.getLabelItems(items));
+        const data = MetaSelectHelper.getLabelItems(items);
+        this.sendJson(data);
     }
 
     async actionSearch () {
@@ -67,9 +69,12 @@ module.exports = class MetaController extends Base {
             throw new BadRequest('Invalid search value');
         }
         const nodes = section.search(value);
-        nodes.length
-            ? this.sendJson(await this.resolveNodes(nodes, section))
-            : this.send();
+        if (nodes.length) {
+            const data = await this.resolveNodes(nodes, section);
+            this.sendJson(data);
+        } else {
+            this.send();
+        }
     }
 
     async resolveNodes (items, section) {
@@ -97,7 +102,8 @@ module.exports = class MetaController extends Base {
 
     setDynamicNodes (items, result) {
         for (const item of items) {
-            result.push(Object.assign(this.getNodeData(item), {
+            const data = this.getNodeData(item);
+            result.push(Object.assign(data, {
                objectId: item.objectId,
                urlParams: item.serializeUrlParams()
             }));

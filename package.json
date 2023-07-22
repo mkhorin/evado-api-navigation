@@ -1,6 +1,6 @@
 {
   "name": "evado-api-navigation",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Evado Framework navigation data access API module",
   "author": {
     "name": "Maxim Khorin",
